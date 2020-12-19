@@ -10,8 +10,7 @@ interface SelectorProps {
 }
 
 interface KeyboardProps {
-    onChange: (text: string) => void,
-    visible: bool
+    setInput: (text: any) => void,
 }
 
 export {

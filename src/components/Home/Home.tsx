@@ -32,16 +32,8 @@ const Home = () => {
         torch && displayMorse(lang.into === 'morse' ? translation : input, () => torch, setTorch)
     }, [torch])
 
-    const inputHandler = t => {
-        setInput(t)
-    }
-
     const torchHandler = async () => {
         if (checkCamera()) setTorch(!torch)
-    }
-
-    const keyPress = (key: string): void => {
-
     }
 
     return (
@@ -51,19 +43,22 @@ const Home = () => {
             <Hr />
             <TextInput
                 value={input}
-                onChangeText={t => inputHandler(t)}
+                onChangeText={t => setInput(t)}
                 placeholder="Tap to enter text"
                 multiline={true}
+                editable={lang.into === 'morse'}
                 onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
                 style={[styles.textinput, { height }]}
                 />
             <Hr />
 
-            <ScrollView horizontal={true} style={styles.translationContainer}>
-                <Text style={styles.translation}>
-                    {translation}
-                </Text>
-            </ScrollView>
+            {translation
+                ? <ScrollView horizontal={true} style={styles.translationContainer}>
+                      <Text style={styles.translation}>
+                          {translation}
+                      </Text>
+                  </ScrollView>
+                : <></>}
 
             <View style={styles.buttons}>
                 <Icon
@@ -79,9 +74,7 @@ const Home = () => {
                 <Icon style={styles.icon} onPress={() => {}} src={volume_on} disabled={!translation} />
             </View>
 
-            <View style={{  }}>
-                <Keyboard onChange={keyPress} visible={lang.from === 'morse'} />
-            </View>
+            {lang.from === 'morse' && <Keyboard setInput={setInput} />}
         </View>
     )
 }
@@ -95,7 +88,8 @@ const styles = StyleSheet.create({
         minHeight: 131,
         maxHeight: 198,
         textAlignVertical: 'top',
-        fontSize: 18
+        fontSize: 18,
+        color: 'black'
     },
     translationContainer: {
         flexDirection: 'row',
@@ -113,7 +107,8 @@ const styles = StyleSheet.create({
         justifyContent: 'space-evenly',
         alignItems: 'center',
         padding: 10,
-        width: '40%'
+        width: '40%',
+        marginTop: 10
     },
     icon: {
         width: 25,
