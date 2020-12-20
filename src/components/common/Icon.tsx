@@ -8,8 +8,8 @@ type IconParams = {
     disabled?: bool
 }
 
-const Icon: React.FC<IconParams> = ({ src, onPress, style, disabled = false }: IconParams) => (
-    <TouchableOpacity onPress={onPress} style={style} disabled={disabled}>
+const Icon: React.FC<IconParams> = ({ src, onPress, style, disabled = false, ...rest }: IconParams) => (
+    <TouchableOpacity onPress={onPress} style={style} disabled={disabled} {...rest}>
         <Image source={src} resizeMethod="scale" style={[style, disabled && { opacity: .5 }]} />
     </TouchableOpacity>
 )
