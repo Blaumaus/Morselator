@@ -2,6 +2,7 @@
 
 import React from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Image, Alert } from 'react-native'
+import { displayMessage } from './common/utils'
 
 import Icon from './common/Icon'
 
@@ -33,8 +34,8 @@ const styles = StyleSheet.create({
 })
 
 const Header = () => {
-    const pressHandler = (): void => {
-
+    const settingsHandler = (): void => {
+        displayMessage('This feature is not available yet')
     }
 
     const changeThemeHandler = (): void => {
@@ -43,9 +44,9 @@ const Header = () => {
 
     return (
         <View style={styles.header}>
-                <Icon style={styles.icon} onPress={changeThemeHandler} src={moon} />
-                <Text style={styles.name}>Morselator</Text>
-                <Icon style={styles.icon} onPress={pressHandler} src={settings_icon} />
+            <Icon style={styles.icon} onPress={changeThemeHandler} src={moon} />
+            <Text style={styles.name}>Morselator</Text>
+            <Icon style={styles.icon} onPress={settingsHandler} src={settings_icon} />
         </View>
     )
 }
