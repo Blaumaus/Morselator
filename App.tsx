@@ -1,24 +1,28 @@
-import React from 'react';
-import {
-  SafeAreaView,
-  View,
-  StyleSheet
-} from 'react-native';
+import React from 'react'
+import { SafeAreaView } from 'react-native'
+import { NavigationContainer } from '@react-navigation/native'
+import { createStackNavigator } from '@react-navigation/stack'
 
 import Home from './src/components/Home/Home'
+import SelectLanguage from './src/components/Home/SelectLanguage'
+
+const HomeStack = createStackNavigator()
 
 const App = () => {
-  return (
-      <SafeAreaView style={styles.container}>
-        <Home />
-      </SafeAreaView>
-  )
+    return (
+        <NavigationContainer>
+            <HomeStack.Navigator>
+                <HomeStack.Screen
+                    name="Home"
+                    component={Home}
+                    options={{ headerShown: false }} />
+                <HomeStack.Screen
+                    name="Home.SelectLanguage"
+                    component={SelectLanguage}
+                    options={{ headerTitle: 'Select language' }} />
+            </HomeStack.Navigator>
+        </NavigationContainer>
+    )
 }
 
-const styles = StyleSheet.create({
-  conatiner: {
-    flex: 1
-  }
-})
-
-export default App;
+export default App
