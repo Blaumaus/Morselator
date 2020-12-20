@@ -1,6 +1,7 @@
-import { Clipboard } from 'react-native'
+import { Clipboard, Alert, ToastAndroid, Platform } from 'react-native'
 // import Clipboard from '@react-native-community/clipboard' // https://stackoverflow.com/questions/60945656/react-native-error-setting-and-getting-text-from-clipboard
 import Torch from 'react-native-torch'
+import { Lang } from '../Home/interfaces'
 
 /* Stops the current thread for provided amount of time
  *
@@ -40,7 +41,6 @@ const copyToClipboard = (text: string): void => {
  * @return {bool} the result of camera API check
  */
 const checkCamera = async (): bool => {
-    // Unnecessary, because torch is available without asking for a permission
     /* const allowed = await Torch.requestCameraPermission(
         'Camera permission',
         'The app requires camera permission to use the torch on the back of your phone.'
@@ -61,7 +61,7 @@ const switchTorch = async (state: bool): bool => {
         await Torch.switchState(state)
         return true
     } catch (e) {
-        console.warn('The torch is not accessable. Make sure the app has camera permissions allowed.')
+        console.warn('The torch is not accessible. Make sure the app has camera permissions allowed.')
         return false
     }
 }
@@ -76,6 +76,11 @@ const torchFor = async (ms: number): void => {
     switchTorch(false)
 }
 
+const displayMessage = (msg: string): void => {
+    if (Platform.OS === 'android') ToastAndroid.show(msg, ToastAndroid.LONG)
+    else Alert.alert('', msg)
+}
+
 const displayMorse = async (data: string, torch: () => bool, setTorch: () => void): void => {
     for (let i = 0; torch() && i < data.length; ++i) {
         if (data[i] === '.') await torchFor(300)
@@ -86,6 +91,16 @@ const displayMorse = async (data: string, torch: () => bool, setTorch: () => voi
     setTorch(false)
 }
 
+const getCurrentCode = (lang: Lang): string => {
+    return lang.from === 'morse' ? lang.into : lang.from
+}
+
+// TODO: Refactor
+// Check if translating from more
+const fromMorse = (lang: Lang): boolean => {
+    return lang.from === 'morse'
+}
+
 export {
-    swap, copyToClipboard, checkCamera, displayMorse
+    swap, copyToClipboard, checkCamera, displayMorse, getCurrentCode, fromMorse, displayMessage
 }
