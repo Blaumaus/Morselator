@@ -6,11 +6,12 @@ interface Lang {
 interface SelectorProps {
     lang: Lang,
     setLang: () => any,
-    setInput: () => any
+    setInput: () => any,
+    navigation: any
 }
 
 interface KeyboardProps {
-    setInput: (text: any) => void,
+    setInput: (text: any) => void
 }
 
 export {

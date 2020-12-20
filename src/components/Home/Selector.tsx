@@ -1,14 +1,14 @@
 import React, { useState } from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 
-import { swap } from '../common/utils'
+import { swap, getCurrentCode, fromMorse } from '../common/utils'
 import Refresh from '../../assets/icons/refresh_ccw.png'
 import Icon from '../common/Icon'
-import { SelectorProps } from './interfaces.ts'
+import { SelectorProps, Lang } from './interfaces.ts'
 
 import { data } from '../../assets/dictionaries'
 
-const Selector: React.FC<SelectorProps> = ({ lang, setLang, setInput }: SelectorProps) => {
+const Selector: React.FC<SelectorProps> = ({ lang, setLang, setInput, navigation }: SelectorProps) => {
     const [flexDirection, setFlexDirection] = useState('row')
 
     const switchHandler = (): void => {
@@ -18,13 +18,25 @@ const Selector: React.FC<SelectorProps> = ({ lang, setLang, setInput }: Selector
     }
 
     const changeLanguage = (): void => {
+        navigation.navigate('Home.SelectLanguage', {
+            data, lang
+        })
+    }
 
+    const getCurrentName = (lang: Lang): string => {
+        // TODO: Refactor
+        const name = data.find(({ code }) => code === getCurrentCode(lang)).name
+        return name.length > 12
+            ? name.substr(0, name.length - (name.length - 12)) + '...▼'
+            : name + '▼'
     }
 
     return (
         <View style={[styles.container, { flexDirection }]}>
             <View style={{ flex: 1 }}>
-                <Text style={[styles.text, flexDirection === 'row' ? styles.mra : styles.mla ]}>English</Text>
+                <Text style={[styles.text, flexDirection === 'row' ? styles.mra : styles.mla ]} onPress={changeLanguage}>
+                    {getCurrentName(lang)}
+                </Text>
             </View>
             <Icon src={Refresh} style={styles.icon} onPress={() => switchHandler()} />
             <View style={{ flex: 1 }}>

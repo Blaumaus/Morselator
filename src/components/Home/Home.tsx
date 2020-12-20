@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { View, Text, TextInput, StyleSheet, ScrollView } from 'react-native'
+import React, { useState, useEffect, useRef } from 'react'
+import { View, Text, TextInput, StyleSheet, ScrollView, Animated } from 'react-native'
 
 import Header from '../Header'
 import Selector from './Selector'
@@ -17,14 +17,19 @@ import zap_off from '../../assets/icons/zap_off.png'
 import volume_on from '../../assets/icons/volume_2.png'
 import volume_off from '../../assets/icons/volume_x.png'
 
-const Home = () => {
-    const [lang, setLang] = useState<Lang>({ from: 'en', into: 'morse'})
+const Home = ({ navigation, route }) => {
+    const [lang, setLang] = useState<Lang>(route.params?.lang || { from: 'en', into: 'morse'})
     const [input, setInput] = useState('')
     const [translation, setTranslation] = useState('')
     const [height, setHeight] = useState(131) // TODO: Refactor
     const [torch, setTorch] = useState(false)
 
+    const transHeight = useRef(new Animated.Value(0)).current // needed for animations
+
     useEffect(() => {
+        if (input.length === 0) Animated.spring(transHeight, { toValue: 0, duration: 300, useNativeDriver: false }).start()
+        else if (input.length === 1) Animated.spring(transHeight, { toValue: 50, duration: 300, useNativeDriver: false }).start()
+
         setTranslation(translate(input.trim(), lang.from, lang.into))
     }, [lang, input])
 
@@ -37,28 +42,34 @@ const Home = () => {
     }
 
     return (
-        <View style={styles.container}>
+        <View>
             <Header />
-            <Selector lang={lang} setLang={setLang} setInput={setInput} />
+            <Selector
+                lang={lang}
+                setLang={setLang}
+                setInput={setInput}
+                navigation={navigation} />
             <Hr />
+
             <TextInput
                 value={input}
                 onChangeText={t => setInput(t)}
-                placeholder="Tap to enter text"
+                placeholder={lang.from === 'morse'
+                    ? "Use the morse keyboard to enter text"
+                    : "Tap to enter text"}
                 multiline={true}
                 editable={lang.into === 'morse'}
                 onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
                 style={[styles.textinput, { height }]}
                 />
+
             <Hr />
 
-            {translation
-                ? <ScrollView horizontal={true} style={styles.translationContainer}>
-                      <Text style={styles.translation}>
-                          {translation}
-                      </Text>
-                  </ScrollView>
-                : <></>}
+            <Animated.ScrollView horizontal={true} style={[styles.translationContainer, { minHeight: transHeight }]}>
+                <Text style={styles.translation}>
+                    {translation}
+                </Text>
+            </Animated.ScrollView>
 
             <View style={styles.buttons}>
                 <Icon
@@ -80,9 +91,6 @@ const Home = () => {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1
-    },
     textinput: {
         paddingHorizontal: 20,
         minHeight: 131,
@@ -93,7 +101,6 @@ const styles = StyleSheet.create({
     },
     translationContainer: {
         flexDirection: 'row',
-        minHeight: 60,
         paddingHorizontal: 20,
         paddingVertical: 10,
         marginBottom: 10
@@ -106,9 +113,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-evenly',
         alignItems: 'center',
-        padding: 10,
+        paddingHorizontal: 10,
         width: '40%',
-        marginTop: 10
     },
     icon: {
         width: 25,
