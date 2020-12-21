@@ -17,7 +17,7 @@ const _sleep = (ms: number): Promise<any> => {
  * @param {any} the first key by which the value swaps
  * @param {any} the second key by which the value swaps
  */
-const swap = (obj: object, key1: any, key2: any): object => {
+const swap = (obj: object, key1: string, key2: string): object => {
     const clone: object = JSON.parse(JSON.stringify(obj))
 
     // [clone[key1], clone[key2]] = [clone[key2], clone[key1]]
@@ -40,7 +40,7 @@ const copyToClipboard = (text: string): void => {
  *
  * @return {bool} the result of camera API check
  */
-const checkCamera = async (): bool => {
+const checkCamera = async (): Promise<boolean> => {
     /* const allowed = await Torch.requestCameraPermission(
         'Camera permission',
         'The app requires camera permission to use the torch on the back of your phone.'
@@ -56,7 +56,7 @@ const checkCamera = async (): bool => {
  * @param {bool} the state of the torch
  * @return {bool} the result of camera API call
  */
-const switchTorch = async (state: bool): bool => {
+const switchTorch = async (state: boolean): Promise<boolean> => {
     try {
         await Torch.switchState(state)
         return true
@@ -70,7 +70,7 @@ const switchTorch = async (state: bool): bool => {
  *
  * @param {number} the amount of milliseconds to keep the torch on
  */
-const torchFor = async (ms: number): void => {
+const torchFor = async (ms: number): Promise<void> => {
     switchTorch(true)
     await _sleep(ms)
     switchTorch(false)
@@ -81,7 +81,7 @@ const displayMessage = (msg: string): void => {
     else Alert.alert('', msg)
 }
 
-const displayMorse = async (data: string, torch: () => bool, setTorch: () => void): void => {
+const displayMorse = async (data: string, torch: () => boolean, setTorch: (torch: boolean) => void): Promise<void> => {
     for (let i = 0; torch() && i < data.length; ++i) {
         if (data[i] === '.') await torchFor(300)
         else if (data[i] === '-') await torchFor(900)

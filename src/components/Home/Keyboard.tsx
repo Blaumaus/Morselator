@@ -1,25 +1,25 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native'
 
 import Hr from '../common/Hr'
-import Icon from '../common/Icon'
 
-import { KeyboardProps } from './interfaces.ts'
+import { KeyboardProps } from './interfaces'
 
 interface Key {
     char: string,
     style: object,
     charStyle: object,
-    onPress: (key: string) => void
+    onPress: (key: string) => void,
+    disabled?: boolean
 }
 
-const Key: React.FC<Key> = ({ char, style, charStyle, onPress, ...rest }: Key) => (
-    <TouchableOpacity onPress={() => onPress(char)} style={style} {...rest}>
+const Key: React.FC<Key> = ({ char, style, charStyle, onPress, disabled = false }: Key) => (
+    <TouchableOpacity onPress={() => onPress(char)} style={style} disabled={disabled}>
         <Text style={charStyle}>{char}</Text>
     </TouchableOpacity>
 )
 
-const Keyboard: React.FC<KeyboardProps> = ({ setInput }: KeyboardProps) => (
+const Keyboard: React.FC<KeyboardProps> = ({ setInput }) => (
     <View style={styles.container}>
         <View style={styles.keys}>
             {['-', '.'].map(el => <Key

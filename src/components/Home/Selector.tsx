@@ -1,15 +1,15 @@
 import React, { useState } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
 
 import { swap, getCurrentCode, fromMorse } from '../common/utils'
 import Refresh from '../../assets/icons/refresh_ccw.png'
 import Icon from '../common/Icon'
-import { SelectorProps, Lang } from './interfaces.ts'
+import { SelectorProps, Lang } from './interfaces'
 
 import { data } from '../../assets/dictionaries'
 
-const Selector: React.FC<SelectorProps> = ({ lang, setLang, setInput, navigation }: SelectorProps) => {
-    const [flexDirection, setFlexDirection] = useState('row')
+const Selector: React.FC<SelectorProps> = ({ lang, setLang, setInput, navigation }) => {
+    const [flexDirection, setFlexDirection] = useState<'row-reverse' | 'row'>('row')
 
     const switchHandler = (): void => {
         setLang(swap(lang, 'from', 'into'))
@@ -18,14 +18,12 @@ const Selector: React.FC<SelectorProps> = ({ lang, setLang, setInput, navigation
     }
 
     const changeLanguage = (): void => {
-        navigation.navigate('Home.SelectLanguage', {
-            data, lang
-        })
+        navigation.navigate('Home.SelectLanguage', { data, lang })
     }
 
     const getCurrentName = (lang: Lang): string => {
         // TODO: Refactor
-        const name = data.find(({ code }) => code === getCurrentCode(lang)).name
+        const name = data?.find(({ code }) => code === getCurrentCode(lang))?.name
         return name.length > 12
             ? name.substr(0, name.length - (name.length - 12)) + '...▼'
             : name + '▼'

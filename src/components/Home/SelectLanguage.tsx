@@ -1,8 +1,8 @@
 import React, { Fragment } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import Hr from '../common/Hr'
-import { Lang } from './interfaces'
-import { fromMore, getCurrentCode, fromMorse } from '../common/utils'
+import { NavigationScreenProp } from 'react-navigation'
+import { getCurrentCode, fromMorse } from '../common/utils'
 
 const Item = ({ name, onPress, style, ...rest }) => (
     <TouchableOpacity onPress={onPress} {...rest}>
@@ -10,7 +10,12 @@ const Item = ({ name, onPress, style, ...rest }) => (
     </TouchableOpacity>
 )
 
-const SelectLanguage = ({ navigation, route }) => {
+interface SelectLanguageProps {
+    navigation: any
+    route: { params: any }
+}
+
+const SelectLanguage: React.FC<SelectLanguageProps> = ({ navigation, route }) => {
     const { data, lang } = route.params
 
     return (
@@ -38,9 +43,7 @@ const SelectLanguage = ({ navigation, route }) => {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1
-    },
+    container: { flex: 1 },
     text: {
         fontSize: 18,
         paddingLeft: 20,

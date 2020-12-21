@@ -5,8 +5,8 @@ interface Lang {
 
 interface SelectorProps {
     lang: Lang,
-    setLang: () => any,
-    setInput: () => any,
+    setLang: (lang: any /* Lang | object */) => any,
+    setInput: (input: string) => any,
     navigation: any
 }
 
@@ -14,6 +14,6 @@ interface KeyboardProps {
     setInput: (text: any) => void
 }
 
-export {
-    Lang, SelectorProps
+export type {
+    Lang, SelectorProps, KeyboardProps
 }

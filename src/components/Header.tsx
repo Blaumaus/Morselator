@@ -1,11 +1,10 @@
-// #043087
-
 import React from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, Image, Alert } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { displayMessage } from './common/utils'
+import { connect } from 'react-redux'
+import { setTheme } from '../redux/actions/themeActions'
 
 import Icon from './common/Icon'
-
 import settings_icon from '../assets/icons/settings_dark.png'
 import sun from '../assets/icons/sun.png'
 import moon from '../assets/icons/moon.png'
@@ -24,31 +23,33 @@ const styles = StyleSheet.create({
         position: 'relative',
         paddingHorizontal: 20
     },
-    name: {
-        fontSize: 21
-    },
+    name: { fontSize: 21 },
     icon: {
         width: 25,
         height: 25
     }
 })
 
-const Header = () => {
+const Header = ({ setTheme, theme }) => {
     const settingsHandler = (): void => {
         displayMessage('This feature is not available yet')
     }
 
     const changeThemeHandler = (): void => {
-
+        setTheme(theme === 'white' ? 'dark' : 'white') // inverting theme
     }
 
     return (
         <View style={styles.header}>
-            <Icon style={styles.icon} onPress={changeThemeHandler} src={moon} />
+            <Icon style={styles.icon} onPress={changeThemeHandler} src={theme === 'white' ? moon : sun} />
             <Text style={styles.name}>Morselator</Text>
             <Icon style={styles.icon} onPress={settingsHandler} src={settings_icon} />
         </View>
     )
 }
 
-export default Header
+const mapStateToProps = state => ({
+    theme: state.theme.theme
+})
+
+export default connect(mapStateToProps, { setTheme })(Header)

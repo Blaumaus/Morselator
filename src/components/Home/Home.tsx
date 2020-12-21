@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { View, Text, TextInput, StyleSheet, ScrollView, Animated } from 'react-native'
+import { View, Text, TextInput, StyleSheet, Animated } from 'react-native'
+import { NavigationScreenProp } from 'react-navigation'
 
 import Header from '../Header'
 import Selector from './Selector'
 import Keyboard from './Keyboard'
 
 import Hr from '../common/Hr'
-import { copyToClipboard, checkCamera, displayMorse } from '../common/utils'
-import { Lang } from './interfaces.ts'
+import { copyToClipboard, checkCamera, displayMorse, displayMessage } from '../common/utils'
+import { Lang } from './interfaces'
 import translate from './translate'
 import Icon from '../common/Icon'
 
@@ -17,8 +18,13 @@ import zap_off from '../../assets/icons/zap_off.png'
 import volume_on from '../../assets/icons/volume_2.png'
 import volume_off from '../../assets/icons/volume_x.png'
 
-const Home = ({ navigation, route }) => {
-    const [lang, setLang] = useState<Lang>(route.params?.lang || { from: 'en', into: 'morse'})
+interface HomeProps {
+    navigation: NavigationScreenProp<any, any>
+    route: { params: any } | undefined
+}
+
+const Home: React.FC<HomeProps> = ({ navigation, route }) => {
+    const [lang, setLang] = useState<Lang>(route?.params?.lang || { from: 'en', into: 'morse'})
     const [input, setInput] = useState('')
     const [translation, setTranslation] = useState('')
     const [height, setHeight] = useState(131) // TODO: Refactor
@@ -27,8 +33,8 @@ const Home = ({ navigation, route }) => {
     const transHeight = useRef(new Animated.Value(0)).current // needed for animations
 
     useEffect(() => {
-        if (input.length === 0) Animated.spring(transHeight, { toValue: 0, duration: 300, useNativeDriver: false }).start()
-        else if (input.length === 1) Animated.spring(transHeight, { toValue: 50, duration: 300, useNativeDriver: false }).start()
+        if (input.length === 0) Animated.timing(transHeight, { toValue: 0, useNativeDriver: false }).start()
+        else if (input.length === 1) Animated.spring(transHeight, { toValue: 50, useNativeDriver: false }).start()
 
         setTranslation(translate(input.trim(), lang.from, lang.into))
     }, [lang, input])
@@ -38,7 +44,7 @@ const Home = ({ navigation, route }) => {
     }, [torch])
 
     const torchHandler = async () => {
-        if (checkCamera()) setTorch(!torch)
+        if (checkCamera()) setTorch(!torch) 
     }
 
     return (
@@ -82,7 +88,7 @@ const Home = ({ navigation, route }) => {
                     onPress={() => torchHandler()}
                     src={torch ? zap_off : zap}
                     disabled={!translation} />
-                <Icon style={styles.icon} onPress={() => {}} src={volume_on} disabled={!translation} />
+                <Icon style={styles.icon} onPress={() => displayMessage('This feature is not available yet')} src={volume_on} disabled={!translation} />
             </View>
 
             {lang.from === 'morse' && <Keyboard setInput={setInput} />}
