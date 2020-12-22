@@ -12,7 +12,7 @@ const translate = (text: string, from: string, into: string): string => {
         const lang = data.find(el => el.code === from)?.data
         if (!lang) return 'Translation error'
 
-        return text.split('').map(ch => { console.log(ch); return lang[ch.toLowerCase()]  || ''}).join(' ')
+        return text.split('').map(ch => lang[ch.toLowerCase()]  || '').join(' ')
     }
 
     return 'Translation error'
