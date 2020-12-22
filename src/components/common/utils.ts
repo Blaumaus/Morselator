@@ -1,5 +1,5 @@
-import { Clipboard, Alert, ToastAndroid, Platform } from 'react-native'
-// import Clipboard from '@react-native-community/clipboard' // https://stackoverflow.com/questions/60945656/react-native-error-setting-and-getting-text-from-clipboard
+import { Alert, ToastAndroid, Platform } from 'react-native'
+import Clipboard from '@react-native-community/clipboard'
 import Torch from 'react-native-torch'
 import { Lang } from '../Home/interfaces'
 
@@ -34,6 +34,12 @@ const swap = (obj: object, key1: string, key2: string): object => {
  */
 const copyToClipboard = (text: string): void => {
     Clipboard.setString(text)
+}
+
+/* Returns text from clipboard.
+ */
+const getFromClipboard = async(): Promise<string> => {
+    return await Clipboard.getString()
 }
 
 /* Checks Camera API permission.
@@ -76,8 +82,8 @@ const torchFor = async (ms: number): Promise<void> => {
     switchTorch(false)
 }
 
-const displayMessage = (msg: string): void => {
-    if (Platform.OS === 'android') ToastAndroid.show(msg, ToastAndroid.LONG)
+const displayMessage = (msg: string, short: boolean = false): void => {
+    if (Platform.OS === 'android') ToastAndroid.show(msg, short ? ToastAndroid.SHORT : ToastAndroid.LONG)
     else Alert.alert('', msg)
 }
 
@@ -102,5 +108,5 @@ const fromMorse = (lang: Lang): boolean => {
 }
 
 export {
-    swap, copyToClipboard, checkCamera, displayMorse, getCurrentCode, fromMorse, displayMessage
+    swap, copyToClipboard, checkCamera, displayMorse, getCurrentCode, fromMorse, displayMessage, getFromClipboard
 }

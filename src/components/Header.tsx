@@ -3,34 +3,42 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { displayMessage } from './common/utils'
 import { connect } from 'react-redux'
 import { setTheme } from '../redux/actions/themeActions'
+import { getThemeParam } from '../themes'
 
 import Icon from './common/Icon'
 import settings_icon from '../assets/icons/settings_dark.png'
 import sun from '../assets/icons/sun.png'
 import moon from '../assets/icons/moon.png'
 
-const styles = StyleSheet.create({
-    header: {
-        backgroundColor: '#f8f8f8',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        height: 50,
-        shadowColor: 'black',
-        shadowOffset: { width: 0, height: 3 },
-        shadowOpacity: .3,
-        elevation: 1,
-        position: 'relative',
-        paddingHorizontal: 20
-    },
-    name: { fontSize: 21 },
-    icon: {
-        width: 25,
-        height: 25
-    }
-})
+const getStyles = theme => 
+    StyleSheet.create({
+        header: {
+            backgroundColor: getThemeParam('headerBackgroundColor', theme),
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            height: 50,
+            shadowColor: 'black',
+            shadowOffset: { width: 0, height: 3 },
+            shadowOpacity: .3,
+            elevation: 1,
+            position: 'relative',
+            paddingHorizontal: 20
+        },
+        name: { 
+            fontSize: 21, 
+            color: getThemeParam('descTextColor', theme)
+        },
+        icon: {
+            width: 25,
+            height: 25,
+            tintColor: getThemeParam('actionTextColor', theme)
+        }
+    })
 
 const Header = ({ setTheme, theme }) => {
+    let styles = getStyles(theme)
+
     const settingsHandler = (): void => {
         displayMessage('This feature is not available yet')
     }

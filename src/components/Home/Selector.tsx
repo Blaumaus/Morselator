@@ -1,15 +1,42 @@
 import React, { useState } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
+import { connect } from 'react-redux'
 
 import { swap, getCurrentCode, fromMorse } from '../common/utils'
 import Refresh from '../../assets/icons/refresh_ccw.png'
 import Icon from '../common/Icon'
 import { SelectorProps, Lang } from './interfaces'
+import { getThemeParam } from '../../themes'
 
 import { data } from '../../assets/dictionaries'
 
-const Selector: React.FC<SelectorProps> = ({ lang, setLang, setInput, navigation }) => {
+const getStyles = theme => 
+    StyleSheet.create({
+        container: {
+            flex: 1,
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            paddingHorizontal: 20,
+            paddingVertical: 22,
+            backgroundColor: getThemeParam('backgroundColor', theme)
+        },
+        icon: {
+            width: 22,
+            height: 22,
+            tintColor: getThemeParam('actionTextColor', theme)
+        },
+        text: {
+            color: getThemeParam('actionTextColor', theme),
+            fontSize: 18
+        },
+        mra: { marginRight: 'auto' },
+        mla: { marginLeft: 'auto' }
+    })
+
+const Selector: React.FC<SelectorProps> = ({ lang, setLang, setInput, navigation, theme }) => {
     const [flexDirection, setFlexDirection] = useState<'row-reverse' | 'row'>('row')
+    const styles = getStyles(theme)
 
     const switchHandler = (): void => {
         setLang(swap(lang, 'from', 'into'))
@@ -44,25 +71,8 @@ const Selector: React.FC<SelectorProps> = ({ lang, setLang, setInput, navigation
     )
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        paddingHorizontal: 20,
-        paddingVertical: 22
-    },
-    icon: {
-         width: 22,
-         height: 22
-    },
-    text: {
-        color: '#043087',
-        fontSize: 18
-    },
-    mra: { marginRight: 'auto' },
-    mla: { marginLeft: 'auto' }
+const mapStateToProps = state => ({
+    theme: state.theme.theme
 })
 
-export default Selector
+export default connect(mapStateToProps)(Selector)

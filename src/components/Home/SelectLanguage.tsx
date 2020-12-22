@@ -1,8 +1,9 @@
 import React, { Fragment } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import Hr from '../common/Hr'
-import { NavigationScreenProp } from 'react-navigation'
+import { connect } from 'react-redux'
 import { getCurrentCode, fromMorse } from '../common/utils'
+import { getThemeParam } from '../../themes'
 
 const Item = ({ name, onPress, style, ...rest }) => (
     <TouchableOpacity onPress={onPress} {...rest}>
@@ -13,11 +14,27 @@ const Item = ({ name, onPress, style, ...rest }) => (
 interface SelectLanguageProps {
     navigation: any
     route: { params: any }
+    theme: string
 }
 
-const SelectLanguage: React.FC<SelectLanguageProps> = ({ navigation, route }) => {
-    const { data, lang } = route.params
+const getStyles = theme => 
+    StyleSheet.create({
+        container: { 
+            flex: 1,
+            backgroundColor: getThemeParam('backgroundColor', theme)
+        },
+        text: {
+            fontSize: 18,
+            paddingLeft: 20,
+            paddingVertical: 10
+        },
+        textColour: { color: getThemeParam('actionTextColor', theme) }
+    })
 
+const SelectLanguage: React.FC<SelectLanguageProps> = ({ navigation, route, theme }) => {
+    const styles = getStyles(theme)
+    const { data, lang } = route.params
+    
     return (
         <View style={styles.container}>
             {data.map(({ name, code }) =>
@@ -32,7 +49,7 @@ const SelectLanguage: React.FC<SelectLanguageProps> = ({ navigation, route }) =>
                                 }
                             })
                         }}
-                        style={[styles.text, styles.blue]}
+                        style={[styles.text, styles.textColour]}
                         enabled={code !== getCurrentCode(lang)}
                         />
                     <Hr />
@@ -42,14 +59,8 @@ const SelectLanguage: React.FC<SelectLanguageProps> = ({ navigation, route }) =>
     )
 }
 
-const styles = StyleSheet.create({
-    container: { flex: 1 },
-    text: {
-        fontSize: 18,
-        paddingLeft: 20,
-        paddingVertical: 10
-    },
-    blue: { color: '#043087' }
+const mapStateToProps = state => ({
+    theme: state.theme.theme
 })
 
-export default SelectLanguage
+export default connect(mapStateToProps)(SelectLanguage)

@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-nati
 
 import Hr from '../common/Hr'
 
+import { getFromClipboard } from '../common/utils'
 import { KeyboardProps } from './interfaces'
 
 interface Key {
@@ -34,19 +35,18 @@ const Keyboard: React.FC<KeyboardProps> = ({ setInput }) => (
         <Hr />
         <View style={styles.keys}>
             <Key
-                char={''}
-                disabled={true}
-                style={[styles.small, { flex: 1 }]}
+                char={'PASTE'}
+                style={[styles.small, { flex: 2 }]}
                 charStyle={{ fontSize: 18, color: '#043087' }}
-                onPress={k => setInput(input => input + ' ')} />
+                onPress={k => getFromClipboard().then(e => setInput(input => input + e))} />
             <Key
                 char={'SPACE'}
-                style={[styles.small, { flex: 3 }]}
+                style={[styles.small, { flex: 4 }]}
                 charStyle={{ fontSize: 18, color: '#043087' }}
                 onPress={k => setInput(input => input + ' ')} />
             <Key
                 char={'BS'}
-                style={[styles.small, { flex: 1 }]}
+                style={[styles.small, { flex: 2 }]}
                 charStyle={{ fontSize: 18, color: '#043087' }}
                 onPress={k => setInput(input => input.slice(0, -1))} />
         </View>

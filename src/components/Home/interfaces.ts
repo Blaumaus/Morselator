@@ -7,7 +7,8 @@ interface SelectorProps {
     lang: Lang,
     setLang: (lang: any /* Lang | object */) => any,
     setInput: (input: string) => any,
-    navigation: any
+    navigation: any,
+    theme: any
 }
 
 interface KeyboardProps {
