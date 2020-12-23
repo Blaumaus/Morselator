@@ -118,12 +118,13 @@ const Home: React.FC<HomeProps> = ({ navigation, route, theme }) => {
                 editable={lang.into === 'morse'}
                 onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
                 style={[styles.textinput, { height }]}
+                testID="textToTranslateInput"
                 />
 
             <Hr />
 
             <Animated.ScrollView horizontal={true} style={[styles.translationContainer, { minHeight: transHeight }]}>
-                <Text style={styles.translation}>
+                <Text style={styles.translation} testID="translation">
                     {translation}
                 </Text>
             </Animated.ScrollView>

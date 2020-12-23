@@ -59,11 +59,11 @@ const Selector: React.FC<SelectorProps> = ({ lang, setLang, setInput, navigation
     return (
         <View style={[styles.container, { flexDirection }]}>
             <View style={{ flex: 1 }}>
-                <Text style={[styles.text, flexDirection === 'row' ? styles.mra : styles.mla ]} onPress={changeLanguage}>
+                <Text style={[styles.text, flexDirection === 'row' ? styles.mra : styles.mla ]} onPress={changeLanguage} testID="selectLanguage">
                     {getCurrentName(lang)}
                 </Text>
             </View>
-            <Icon src={Refresh} style={styles.icon} onPress={() => switchHandler()} />
+            <Icon src={Refresh} style={styles.icon} onPress={() => switchHandler()} testID="swapLanguages" />
             <View style={{ flex: 1 }}>
                 <Text style={[styles.text, flexDirection === 'row' ? styles.mla : styles.mra ]}>Morse</Text>
             </View>

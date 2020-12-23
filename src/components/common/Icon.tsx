@@ -5,7 +5,8 @@ type IconParams = {
     src: any,
     onPress: () => void,
     style: object,
-    disabled?: boolean
+    disabled?: boolean,
+    testID?: any
 }
 
 const Icon: React.FC<IconParams> = ({ src, onPress, style, disabled = false, ...rest }: IconParams) => (

@@ -48,9 +48,9 @@ const Header = ({ setTheme, theme }) => {
     }
 
     return (
-        <View style={styles.header}>
-            <Icon style={styles.icon} onPress={changeThemeHandler} src={theme === 'white' ? moon : sun} />
-            <Text style={styles.name}>Morselator</Text>
+        <View style={styles.header} testID="header">
+            <Icon style={styles.icon} onPress={changeThemeHandler} src={theme === 'white' ? moon : sun} testID="header:theme_button" />
+            <Text style={styles.name} testID="header:app_name">Morselator</Text>
             <Icon style={styles.icon} onPress={settingsHandler} src={settings_icon} />
         </View>
     )

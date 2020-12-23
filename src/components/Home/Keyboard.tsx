@@ -11,11 +11,12 @@ interface Key {
     style: object,
     charStyle: object,
     onPress: (key: string) => void,
-    disabled?: boolean
+    disabled?: boolean,
+    testID?: string
 }
 
-const Key: React.FC<Key> = ({ char, style, charStyle, onPress, disabled = false }: Key) => (
-    <TouchableOpacity onPress={() => onPress(char)} style={style} disabled={disabled}>
+const Key: React.FC<Key> = ({ char, style, charStyle, onPress, disabled = false, testID }: Key) => (
+    <TouchableOpacity onPress={() => onPress(char)} style={style} disabled={disabled} testID={testID}>
         <Text style={charStyle}>{char}</Text>
     </TouchableOpacity>
 )
@@ -29,7 +30,7 @@ const Keyboard: React.FC<KeyboardProps> = ({ setInput }) => (
                 style={styles.key}
                 charStyle={styles.char}
                 onPress={k => setInput(input => input + k)}
-                />
+                testID={`keyboard:${el === '.' ? 'dot' : 'dash'}`} />
             )}
         </View>
         <Hr />
@@ -38,17 +39,23 @@ const Keyboard: React.FC<KeyboardProps> = ({ setInput }) => (
                 char={'PASTE'}
                 style={[styles.small, { flex: 2 }]}
                 charStyle={{ fontSize: 18, color: '#043087' }}
-                onPress={k => getFromClipboard().then(e => setInput(input => input + e))} />
+                onPress={k => {
+                    setInput(input => input + ' ')
+                    getFromClipboard().then(e => setInput(input => input + e))
+                }} 
+                testID="keyboard:paste" />
             <Key
                 char={'SPACE'}
                 style={[styles.small, { flex: 4 }]}
                 charStyle={{ fontSize: 18, color: '#043087' }}
-                onPress={k => setInput(input => input + ' ')} />
+                onPress={k => setInput(input => input + ' ')} 
+                testID="keyboard:space" />
             <Key
                 char={'BS'}
                 style={[styles.small, { flex: 2 }]}
                 charStyle={{ fontSize: 18, color: '#043087' }}
-                onPress={k => setInput(input => input.slice(0, -1))} />
+                onPress={k => setInput(input => input.slice(0, -1))} 
+                testID="keyboard:backspace" />
         </View>
     </View>
 )
