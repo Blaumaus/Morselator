@@ -1,6 +1,5 @@
 import React from 'react'
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
-import { displayMessage } from './common/utils'
+import { View, Text, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
 import { setTheme } from '../redux/actions/themeActions'
 import { getThemeParam } from '../themes'
@@ -36,11 +35,11 @@ const getStyles = theme =>
         }
     })
 
-const Header = ({ setTheme, theme }) => {
+const Header = ({ setTheme, theme, navigation }) => {
     let styles = getStyles(theme)
 
     const settingsHandler = (): void => {
-        displayMessage('This feature is not available yet')
+        navigation.navigate('Settings')
     }
 
     const changeThemeHandler = (): void => {
