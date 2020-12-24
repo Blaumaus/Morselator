@@ -1,12 +1,12 @@
 import React from 'react'
-import { View, TouchableOpacity, Image } from 'react-native'
+import { TouchableOpacity, Image } from 'react-native'
 
 type IconParams = {
     src: any,
     onPress: () => void,
     style: object,
     disabled?: boolean,
-    testID?: any
+    testID?: string
 }
 
 const Icon: React.FC<IconParams> = ({ src, onPress, style, disabled = false, ...rest }: IconParams) => (

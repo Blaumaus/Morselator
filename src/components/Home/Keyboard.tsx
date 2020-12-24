@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-evenly',
         marginVertical: 10
     },
-    container: { // TODO: Refactor
+    container: {
         position: 'absolute',
         top: Dimensions.get('window').height - 200,
         width: '100%'
@@ -93,10 +93,6 @@ const styles = StyleSheet.create({
     char: {
         fontSize: 65,
         color: '#043087'
-    },
-    image_key: {
-        width: 25,
-        height: 25
     }
 })
 

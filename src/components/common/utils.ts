@@ -44,7 +44,7 @@ const getFromClipboard = async(): Promise<string> => {
 
 /* Checks Camera API permission.
  *
- * @return {bool} the result of camera API check
+ * @return {Promise<boolean>} the result of camera API check
  */
 const checkCamera = async (): Promise<boolean> => {
     try {
@@ -66,7 +66,7 @@ const checkCamera = async (): Promise<boolean> => {
 /* Turns the torch on or off.
  *
  * @param {bool} the state of the torch
- * @return {bool} the result of camera API call
+ * @return {Promise<boolean>} the result of camera API call
  */
 const switchTorch = async (state: boolean): Promise<boolean> => {
     try {
@@ -81,6 +81,7 @@ const switchTorch = async (state: boolean): Promise<boolean> => {
 /* Turns the torch on for N ms.
  *
  * @param {number} the amount of milliseconds to keep the torch on
+ * @return {Promise<void>}
  */
 const torchFor = async (ms: number): Promise<void> => {
     switchTorch(true)
@@ -88,11 +89,22 @@ const torchFor = async (ms: number): Promise<void> => {
     switchTorch(false)
 }
 
+/* Displays the provided message using Toast API (android) or alert (ios) 
+ *
+ * @param {string} the message to output
+ * @param {boolean} [short=false] the message will be displayed for a short or long time
+ */
 const displayMessage = (msg: string, short: boolean = false): void => {
     if (Platform.OS === 'android') ToastAndroid.show(msg, short ? ToastAndroid.SHORT : ToastAndroid.LONG)
     else Alert.alert('', msg)
 }
 
+/* Displays the morse code using torch 
+ *
+ * @param {string} the message to output
+ * @param {fucntion} the callback to torch state
+ * @return {Promise<void>}
+ */
 const displayMorse = async (data: string, setTorch: (torch: boolean) => void): Promise<void> => {
     for (let i = 0; i < data.length; ++i) {
         if (data[i] === '.') await torchFor(300)
@@ -103,12 +115,20 @@ const displayMorse = async (data: string, setTorch: (torch: boolean) => void): P
     setTorch(false)
 }
 
+/* Returns the language code, which is used in pair with 'morse' 
+ *
+ * @param {Lang} the language object
+ * @return {string} the language code
+ */
 const getCurrentCode = (lang: Lang): string => {
     return lang.from === 'morse' ? lang.into : lang.from
 }
 
-// TODO: Refactor
-// Check if translating from more
+/* Checks if we are currently translating from morse code 
+ *
+ * @param {Lang} the language object
+ * @return {boolean} translating from morse code or not
+ */
 const fromMorse = (lang: Lang): boolean => {
     return lang.from === 'morse'
 }

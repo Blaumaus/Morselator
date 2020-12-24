@@ -5,13 +5,20 @@ import { connect } from 'react-redux'
 import { getCurrentCode, fromMorse } from '../common/utils'
 import { getThemeParam } from '../../themes'
 
-const Item = ({ name, onPress, style, ...rest }) => (
-    <TouchableOpacity onPress={onPress} {...rest}>
+type ItemProps = {
+    name: string
+    style: object | object[]
+    onPress: () => void
+    disabled: boolean
+}
+
+const Item: React.FC<ItemProps> = ({ name, onPress, style, disabled }) => (
+    <TouchableOpacity onPress={onPress} disabled={disabled}>
         <Text style={style}>{name}</Text>
     </TouchableOpacity>
 )
 
-interface SelectLanguageProps {
+type SelectLanguageProps = {
     navigation: any
     route: { params: any }
     theme: string
@@ -26,9 +33,9 @@ const getStyles = theme =>
         text: {
             fontSize: 18,
             paddingLeft: 20,
-            paddingVertical: 10
-        },
-        textColour: { color: getThemeParam('actionTextColor', theme) }
+            paddingVertical: 10,
+            color: getThemeParam('actionTextColor', theme)
+        }
     })
 
 const SelectLanguage: React.FC<SelectLanguageProps> = ({ navigation, route, theme }) => {
@@ -49,8 +56,8 @@ const SelectLanguage: React.FC<SelectLanguageProps> = ({ navigation, route, them
                                 }
                             })
                         }}
-                        style={[styles.text, styles.textColour]}
-                        enabled={code !== getCurrentCode(lang)}
+                        style={code === getCurrentCode(lang) ? [styles.text, { color: 'gray' }] : [styles.text]}
+                        disabled={code === getCurrentCode(lang)}
                         />
                     <Hr />
                 </Fragment>

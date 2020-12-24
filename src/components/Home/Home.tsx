@@ -74,7 +74,6 @@ const Home: React.FC<HomeProps> = ({ navigation, route, theme }) => {
     const [lang, setLang] = useState<Lang>(route?.params?.lang || { from: 'en', into: 'morse'})
     const [input, setInput] = useState('')
     const [translation, setTranslation] = useState('')
-    const [height, setHeight] = useState(131) // TODO: Refactor
     const [torch, setTorch] = useState(false)
 
     const transHeight = useRef(new Animated.Value(0)).current // needed for animations
@@ -99,7 +98,7 @@ const Home: React.FC<HomeProps> = ({ navigation, route, theme }) => {
             <StatusBar 
                 barStyle={`${theme === 'white' ? 'dark' : 'white'}-content`} 
                 backgroundColor={getThemeParam('headerBackgroundColor', theme)} />
-            <Header />
+            <Header navigation={navigation} theme={theme} />
             <Selector
                 lang={lang}
                 setLang={setLang}
@@ -117,8 +116,7 @@ const Home: React.FC<HomeProps> = ({ navigation, route, theme }) => {
                 keyboardAppearance={theme === 'white' ? 'light' : 'dark'}
                 multiline={true}
                 editable={lang.into === 'morse'}
-                onContentSizeChange={e => setHeight(e.nativeEvent.contentSize.height)}
-                style={[styles.textinput, { height }]}
+                style={styles.textinput}
                 testID="textToTranslateInput"
                 />
 
