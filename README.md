@@ -1,5 +1,5 @@
 # Morselator
-Translate morse code into raw text and vice-versa.\
+Translate Morse code into raw text and vice-versa.\
 Using this app, you can decipher or decode Morse codes into many languages, create a secret message or learn cryptography.
 
 __FEATURES:__
