@@ -87,11 +87,12 @@ const Home: React.FC<HomeProps> = ({ navigation, route, theme }) => {
     }, [lang, input])
 
     useEffect(() => {
-        torch && displayMorse(lang.into === 'morse' ? translation : input, () => torch, setTorch)
+        torch && displayMorse(lang.into === 'morse' ? translation : input, setTorch)
     }, [torch])
-
+    
     const torchHandler = async () => {
-        if (checkCamera()) setTorch(!torch) 
+        if (await checkCamera()) setTorch(!torch) 
+        else displayMessage('Morselator needs camera permission in order to use this feature')
     }
     return (
         <View>

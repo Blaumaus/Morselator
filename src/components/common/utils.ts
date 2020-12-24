@@ -1,4 +1,4 @@
-import { Alert, ToastAndroid, Platform } from 'react-native'
+import { Alert, ToastAndroid, Platform, PermissionsAndroid } from 'react-native'
 import Clipboard from '@react-native-community/clipboard'
 import Torch from 'react-native-torch'
 import { Lang } from '../Home/interfaces'
@@ -47,14 +47,20 @@ const getFromClipboard = async(): Promise<string> => {
  * @return {bool} the result of camera API check
  */
 const checkCamera = async (): Promise<boolean> => {
-    /* const allowed = await Torch.requestCameraPermission(
-        'Camera permission',
-        'The app requires camera permission to use the torch on the back of your phone.'
-    )
-
-    return allowed */
-
-    return true
+    try {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.CAMERA, {
+            title: "Camera permission",
+            message: 'The app requires camera permission to use the torch on the back of your phone.',
+            buttonPositive: "OK"
+          }
+        )
+        
+        return granted === PermissionsAndroid.RESULTS.GRANTED
+    } catch (err) {
+        console.warn(err)
+        return false
+    }
 }
 
 /* Turns the torch on or off.
@@ -87,8 +93,8 @@ const displayMessage = (msg: string, short: boolean = false): void => {
     else Alert.alert('', msg)
 }
 
-const displayMorse = async (data: string, torch: () => boolean, setTorch: (torch: boolean) => void): Promise<void> => {
-    for (let i = 0; torch() && i < data.length; ++i) {
+const displayMorse = async (data: string, setTorch: (torch: boolean) => void): Promise<void> => {
+    for (let i = 0; i < data.length; ++i) {
         if (data[i] === '.') await torchFor(300)
         else if (data[i] === '-') await torchFor(900)
         await _sleep(300)
