@@ -26,6 +26,13 @@ By definition a dot is one unit long, and a dash is three units long. Spaces bet
 
 Often the dot, was represented by the word "di" and the dash by "dah" tending to represent the sound more easily.
 
+# Showcase
+<img src="https://user-images.githubusercontent.com/35810911/141032566-fb5dd7cb-3d98-4f01-816c-3080f99f4477.jpg" width="400" />
+<br />
+<img src="https://user-images.githubusercontent.com/35810911/141032569-b08c4794-cbdf-4079-b03b-7d0924543169.jpg" width="400" />
+<br />
+<img src="https://user-images.githubusercontent.com/35810911/141032570-adeef4a9-a377-4813-94ba-537d6fa19ae4.jpg" width="400" />
+
 # Contributing
 You are welcome to contribute!\
 All PR's, suggestions, etc. are welcome.\
